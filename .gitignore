@@ -1,0 +1,8 @@
+# virtualenv
+env/*
+
+# Data
+data/*.txt
+
+# Python
+*.pyc
