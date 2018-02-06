@@ -50,7 +50,7 @@ def get_ron_quotes():
 
 def main():
     all_lines = get_ron_quotes()
-    filepath = os.path.join("data", "ron_quotes.txt")
+    filepath = os.path.join("data", "tvfanatic_quotes.txt")
     with open(filepath, "w") as fout:
         fout.writelines(all_lines)
 
@@ -61,4 +61,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

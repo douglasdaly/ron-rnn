@@ -13,10 +13,11 @@ DATA_DIR=data
 #  Functions
 #
 
-all: requirements data
+all: requirements data clean
 
 data:
 	$(PYTHON) $(SOURCE_DIR)/get_ron_quotes.py
+	$(PYTHON) $(SOURCE_DIR)/get_ron_quotes_2.py
 
 requirements:
 	$(PIP) install -r requirements.txt
