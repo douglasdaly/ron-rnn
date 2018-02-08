@@ -13,7 +13,7 @@ DATA_DIR=data
 #  Functions
 #
 
-all: requirements data clean
+all: clean requirements data
 
 data:
 	$(PYTHON) $(SOURCE_DIR)/get_ron_quotes.py

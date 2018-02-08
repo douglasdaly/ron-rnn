@@ -49,10 +49,10 @@ def get_ron_quotes():
 
 
 def main():
-    all_lines = get_ron_quotes()
+    all_lines = '\n'.join(get_ron_quotes())
     filepath = os.path.join("data", "tvfanatic_quotes.txt")
     with open(filepath, "w") as fout:
-        fout.writelines(all_lines)
+        fout.write(all_lines)
 
 
 #
