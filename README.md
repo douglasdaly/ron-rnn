@@ -2,7 +2,7 @@
 
 *RNN trained on Ron Swanson lines to generate random quotes.*
 
-#### Setup
+## Setup
 
 Install requirements:
 
@@ -10,13 +10,21 @@ Install requirements:
 make requirements
 ```
 
+## Data
+
 Fetch the data:
 
 ```
 make data
 ```
 
-#### License
+Process the raw data:
+
+```
+make process
+```
+
+### License
 
 This project's code is licensed under the MIT license.
 
