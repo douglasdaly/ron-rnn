@@ -26,6 +26,6 @@ make process
 
 ### License
 
-This project's code is licensed under the MIT license.
+This project's code is licensed under the MIT license.  For details see the LICENSE file.
 
 
