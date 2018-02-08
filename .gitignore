@@ -4,5 +4,8 @@ env/*
 # Data
 data/*.txt
 
+# Processed
+processed/*.pkl
+
 # Python
 *.pyc
