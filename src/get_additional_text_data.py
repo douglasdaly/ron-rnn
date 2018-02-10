@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Download GloVe Embeddings Data
+Download Additional Text Data
 """
 #
 #   Imports
@@ -13,7 +13,7 @@ import urllib.request
 #   Functions
 #
 
-glove_url = "http://nlp.stanford.edu/data/glove.6B.zip"
+text_url = "http://mattmahoney.net/dc/text8.zip"
 
 
 def download_file(filename, url):
@@ -23,13 +23,12 @@ def download_file(filename, url):
 
 
 def main():
-    """ Main Script Routine """
-    filename = "data/glove.6B.zip"
-    download_file(filename, glove_url)
+    """ Main script routine """
+    download_file("data/text8.zip", text_url)
 
 
 #
-#   Script Entry-Point
+#   Script Entry Point
 #
 if __name__ == "__main__":
     main()
