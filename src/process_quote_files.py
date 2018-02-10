@@ -10,6 +10,8 @@ import pickle
 
 import numpy as np
 
+from sklearn.preprocessing import OneHotEncoder
+
 
 #
 #   Functions
@@ -44,7 +46,7 @@ def get_moby_dick_lines():
         if line == end_string:
             break
 
-        if line.lower().startswith("chapter") or len(line) == 0:
+        if line.lower().startswith("chapter") or len(line) < 2:
             continue
 
         ret.append(line)
@@ -102,9 +104,22 @@ def get_indices(all_lines, unq_chars):
     """ Get Indices of words for each sentence """
     all_indices = list()
     for line in all_lines:
-        t_indices = [(unq_chars == ch).argmax() for ch in line if ch in unq_chars]
-        all_indices.append(t_indices)
+        t_indices = np.array([(unq_chars == ch).argmax()
+                              for ch in line if ch in unq_chars])
+        if len(t_indices) < 2:
+            continue
+
+        all_indices.append(t_indices.reshape(-1, 1))
     return all_indices
+
+
+def convert_indices_to_one_hot_vectors(indices, char_mapping):
+    """ Converts the list of indices to one-hot vectors """
+    ohe = OneHotEncoder(len(char_mapping))
+    ret = list()
+    for arr in indices:
+        ret.append(ohe.fit_transform(arr))
+    return ret
 
 
 def main():
@@ -113,22 +128,29 @@ def main():
     all_lines = process_all_lines(files)
 
     unq_chars = get_unique_characters(all_lines)[:30]
+
     all_indices = get_indices(all_lines, unq_chars)
+    del all_lines
+    all_onehots = convert_indices_to_one_hot_vectors(all_indices, unq_chars)
+    del all_indices
 
     addl_lines = clean_file_text(get_moby_dick_lines())
     addl_indices = get_indices(addl_lines, unq_chars)
+    del addl_lines
+    addl_onehots = convert_indices_to_one_hot_vectors(addl_indices, unq_chars)
+    del addl_indices
 
-    unq_words_fpath = os.path.join('processed', 'unq_chars.pkl')
-    with open(unq_words_fpath, 'wb') as fout:
+    unq_chars_fpath = os.path.join('processed', 'unq_chars.pkl')
+    with open(unq_chars_fpath, 'wb') as fout:
         pickle.dump(unq_chars, fout)
 
-    indices_fpath = os.path.join('processed', 'all_indices.pkl')
-    with open(indices_fpath, 'wb') as fout:
-        pickle.dump(all_indices, fout)
+    quote_fpath = os.path.join('processed', 'quote_onehots.pkl')
+    with open(quote_fpath, 'wb') as fout:
+        pickle.dump(all_onehots, fout)
 
-    addl_indices_fpath = os.path.join('processed', 'addl_indices.pkl')
-    with open(addl_indices_fpath, 'wb') as fout:
-        pickle.dump(addl_indices, fout)
+    addl_fpath = os.path.join('processed', 'addl_onehots.pkl')
+    with open(addl_fpath, 'wb') as fout:
+        pickle.dump(addl_onehots, fout)
 
 
 #
