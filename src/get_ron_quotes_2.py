@@ -82,10 +82,11 @@ def get_all_lines():
 
 def main():
     """ Main script function """
-    all_lines = '\n'.join(get_all_lines())
     filepath = os.path.join('data', 'swansonquotes_quotes.txt')
-    with open(filepath, 'w') as fout:
-        fout.write(all_lines)
+    if not os.path.exists(filepath):
+        all_lines = '\n'.join(get_all_lines())
+        with open(filepath, 'w') as fout:
+            fout.write(all_lines)
 
 
 #

@@ -3,6 +3,7 @@ env/*
 
 # Data
 data/*.txt
+data/*.zip
 
 # Processed
 processed/*.pkl

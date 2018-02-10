@@ -49,10 +49,11 @@ def get_ron_quotes():
 
 
 def main():
-    all_lines = '\n'.join(get_ron_quotes())
     filepath = os.path.join("data", "tvfanatic_quotes.txt")
-    with open(filepath, "w") as fout:
-        fout.write(all_lines)
+    if not os.path.exists(filepath):
+        all_lines = '\n'.join(get_ron_quotes())
+        with open(filepath, "w") as fout:
+            fout.write(all_lines)
 
 
 #

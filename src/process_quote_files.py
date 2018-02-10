@@ -85,6 +85,10 @@ def main():
     unq_words = get_unique_words(all_lines)
     all_indices = get_indices(all_lines, unq_words)
 
+    all_lines_fpath = os.path.join('processed', 'all_lines.pkl')
+    with open(all_lines_fpath, 'wb') as fout:
+        pickle.dump(all_lines, fout)
+
     unq_words_fpath = os.path.join('processed', 'unq_words.pkl')
     with open(unq_words_fpath, 'wb') as fout:
         pickle.dump(unq_words, fout)
