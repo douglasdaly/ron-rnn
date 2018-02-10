@@ -22,6 +22,36 @@ def get_all_quote_files():
     return ret
 
 
+def get_moby_dick_lines():
+    """ Gets Moby Dick text training files """
+    moby_dick_file = os.path.join("data", "moby_dick.txt")
+    ret = list()
+    with open(moby_dick_file, 'r') as fin:
+        file_lines = fin.readlines()
+
+    book_started = False
+
+    start_string = "CHAPTER 1. Loomings."
+    end_string = "End of Project Gutenberg’s Moby Dick; or The Whale, by Herman Melville"
+
+    for line in file_lines:
+        line = line.strip()
+        if not book_started:
+            if line == start_string:
+                book_started = True
+            continue
+
+        if line == end_string:
+            break
+
+        if line.lower().startswith("chapter") or len(line) == 0:
+            continue
+
+        ret.append(line)
+
+    return ret
+
+
 def load_text_file(filename):
     """ Loads all lines from given text file """
     filepath = os.path.join("data", filename)
@@ -39,7 +69,7 @@ def clean_line(line):
         elif ch == ' ':
             ret += ch
         elif ch in ('.', '?', '!'):
-            ret += " <EOL> "
+            ret += ch
     return ret.strip()
 
 
@@ -51,9 +81,8 @@ def clean_file_text(file_lines):
     return ret
 
 
-def process_all_lines():
+def process_all_lines(files):
     """ Get all lines from all relevant files """
-    files = get_all_quote_files()
     all_lines = list()
     for file in files:
         t_lines = load_text_file(file)
@@ -61,46 +90,49 @@ def process_all_lines():
     return all_lines
 
 
-def get_unique_words(all_lines):
-    """ Get all unique words from the given lines """
-    unq_lines = set()
+def get_unique_characters(all_lines):
+    """ Get all unique characters from the given lines """
+    unq_chars = set()
     for line in all_lines:
-        unq_lines = unq_lines.union(line.split())
-    return np.array(sorted(unq_lines))
+        unq_chars = unq_chars.union([ch for ch in line])
+    return np.array(sorted(unq_chars))
 
 
-def get_indices(all_lines, unq_words):
+def get_indices(all_lines, unq_chars):
     """ Get Indices of words for each sentence """
     all_indices = list()
     for line in all_lines:
-        words = line.strip().split()
-        t_indices = [(unq_words == w).argmax() for w in words]
+        t_indices = [(unq_chars == ch).argmax() for ch in line if ch in unq_chars]
         all_indices.append(t_indices)
     return all_indices
 
 
 def main():
     """ Main script function """
-    all_lines = process_all_lines()
-    unq_words = get_unique_words(all_lines)
-    all_indices = get_indices(all_lines, unq_words)
+    files = get_all_quote_files()
+    all_lines = process_all_lines(files)
 
-    all_lines_fpath = os.path.join('processed', 'all_lines.pkl')
-    with open(all_lines_fpath, 'wb') as fout:
-        pickle.dump(all_lines, fout)
+    unq_chars = get_unique_characters(all_lines)[:30]
+    all_indices = get_indices(all_lines, unq_chars)
 
-    unq_words_fpath = os.path.join('processed', 'unq_words.pkl')
+    addl_lines = clean_file_text(get_moby_dick_lines())
+    addl_indices = get_indices(addl_lines, unq_chars)
+
+    unq_words_fpath = os.path.join('processed', 'unq_chars.pkl')
     with open(unq_words_fpath, 'wb') as fout:
-        pickle.dump(unq_words, fout)
+        pickle.dump(unq_chars, fout)
 
     indices_fpath = os.path.join('processed', 'all_indices.pkl')
     with open(indices_fpath, 'wb') as fout:
         pickle.dump(all_indices, fout)
 
+    addl_indices_fpath = os.path.join('processed', 'addl_indices.pkl')
+    with open(addl_indices_fpath, 'wb') as fout:
+        pickle.dump(addl_indices, fout)
+
 
 #
 #   Entry Point
 #
-
 if __name__ == "__main__":
     main()

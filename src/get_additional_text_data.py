@@ -13,7 +13,7 @@ import urllib.request
 #   Functions
 #
 
-text_url = "http://mattmahoney.net/dc/text8.zip"
+moby_dick_url = "https://www.gutenberg.org/files/2701/2701-0.txt"
 
 
 def download_file(filename, url):
@@ -24,7 +24,7 @@ def download_file(filename, url):
 
 def main():
     """ Main script routine """
-    download_file("data/text8.zip", text_url)
+    download_file("data/moby_dick.txt", moby_dick_url)
 
 
 #
