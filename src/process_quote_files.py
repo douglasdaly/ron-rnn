@@ -118,7 +118,7 @@ def convert_indices_to_one_hot_vectors(indices, char_mapping):
     ohe = OneHotEncoder(len(char_mapping))
     ret = list()
     for arr in indices:
-        ret.append(ohe.fit_transform(arr))
+        ret.append(ohe.fit_transform(arr).todense())
     return ret
 
 

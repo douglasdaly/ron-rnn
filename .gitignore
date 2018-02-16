@@ -8,5 +8,8 @@ data/*.zip
 # Processed
 processed/*.pkl
 
+# Checkpoints
+checkpoints/*.h5
+
 # Python
 *.pyc
