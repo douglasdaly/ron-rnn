@@ -65,9 +65,9 @@ def build_model(char_mapping):
     model = Sequential()
 
     # - First Layer
-    model.add(LSTM(128, input_shape=(None, len(char_mapping)),
+    model.add(LSTM(512, input_shape=(None, len(char_mapping)),
                    return_sequences=True))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
 
     # - Next Layer
     model.add(TimeDistributed(Dense(len(char_mapping))))
@@ -81,12 +81,26 @@ def build_model(char_mapping):
 
 def main():
     """ Main script routine """
-    seq_len = 20
+    seq_len = 30
     char_mapping, quote_data, addl_data = get_data()
     x_quote, y_quote = get_training_data(quote_data, seq_len)
     x_addl, y_addl = get_training_data(addl_data, seq_len)
 
     model = build_model(char_mapping)
+
+    # - Any existing checkpoints to work off of?
+    start_epoch = 0
+    for _, _, filenames in os.walk("checkpoints"):
+        for filename in filenames:
+            if filename.startswith('ron_rnn_model-addl-'):
+                t_epoch = int(filename.split('.')[0].split('-')[-1])
+                if t_epoch > start_epoch:
+                    start_epoch = t_epoch
+
+    if start_epoch > 0:
+        filename = os.path.join("checkpoints", "ron_rnn_model-addl-" +
+                                str(start_epoch) + ".h5")
+        model.load_weights(filename)
 
     # - Model Checkpoint Callbacks
     addl_checkpoint = \
@@ -96,11 +110,11 @@ def main():
 
     # - Fit Addl Data
     print("Training on Moby Dick Data...")
-    batch_size = 512
-    addl_epochs = 100
+    batch_size = 2048
+    addl_epochs = 1000
     addl_history = model.fit(x=x_addl, y=y_addl, batch_size=batch_size,
-                             epochs=addl_epochs, callbacks=[addl_checkpoint],
-                             verbose=1)
+                             epochs=addl_epochs-start_epoch,
+                             callbacks=[addl_checkpoint], verbose=1)
 
     # - Fit Quote Data
     print("Training on Ron Data...")

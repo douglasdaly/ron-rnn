@@ -61,11 +61,12 @@ def generate_quote(model, start_letters, char_mapping, sequence_length):
     i = len(start_letters) - 1
     while next_letter not in ('.', '!', '?'):
         t_out = model.predict(get_formatted_data(curr, char_mapping, sequence_length))
-        next_letter = char_mapping[t_out[0, i, :].argmax()]
+        next_letter = char_mapping[np.random.choice(range(len(char_mapping)),
+                                                    1, p=t_out[0, i, :])[0]]
         i = min(sequence_length-1, i+1)
         ret += next_letter
         curr += next_letter
-        if len(curr) > 20:
-            curr = curr[-20:-1]
+        if len(curr) > sequence_length:
+            curr = curr[-sequence_length:-1]
 
     return ret
