@@ -33,7 +33,8 @@ requirements:
 	$(PIP) install -r requirements.txt
 
 clean:
-	rm $(PROCESSED_DIR)/*
-	rm $(DATA_DIR)/*
-	rm $(CHECKPOINT_DIR)/*
+	rm -f $(PROCESSED_DIR)/*.pkl
+	rm -f $(DATA_DIR)/*.txt
+	rm -f $(DATA_DIR)/*.zip
+	rm -f $(CHECKPOINT_DIR)/*.h5
 

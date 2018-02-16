@@ -118,7 +118,7 @@ def main():
 
     # - Fit Quote Data
     print("Training on Ron Data...")
-    quote_epochs = 2 * addl_epochs
+    quote_epochs = addl_epochs
     quote_history = model.fit(x=x_quote, y=y_quote, batch_size=batch_size,
                               epochs=quote_epochs,
                               callbacks=[quote_checkpoint], verbose=1)
