@@ -68,7 +68,11 @@ def build_model(char_mapping):
                    return_sequences=True))
     model.add(Dropout(0.3))
 
-    # - Next Layer
+    # - Second Layer
+    model.add(LSTM(512, input_shape=(None, len(char_mapping)),
+                   return_sequences=True))
+
+    # - Output Layer
     model.add(TimeDistributed(Dense(len(char_mapping))))
     model.add(Activation("softmax"))
 
