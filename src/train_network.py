@@ -5,7 +5,6 @@ Create and Train an RNN
 #
 #   Imports
 #
-#%%
 import os
 import pickle
 
@@ -110,7 +109,7 @@ def main():
 
     # - Fit Addl Data
     print("Training on Moby Dick Data...")
-    batch_size = 2048
+    batch_size = 1024
     addl_epochs = 1000
     addl_history = model.fit(x=x_addl, y=y_addl, batch_size=batch_size,
                              epochs=addl_epochs-start_epoch,
