@@ -10,6 +10,7 @@ processed/*.pkl
 
 # Checkpoints
 checkpoints/*.h5
+checkpoints/*.pkl
 
 # Python
 *.pyc

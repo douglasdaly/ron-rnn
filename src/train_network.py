@@ -103,9 +103,11 @@ def main():
 
     # - Model Checkpoint Callbacks
     addl_checkpoint = \
-        ModelCheckpoint("checkpoints/ron_rnn_model-addl-{epoch:02d}.h5")
+        ModelCheckpoint("checkpoints/ron_rnn_model-addl-{epoch:02d}.h5",
+                        period=10)
     quote_checkpoint = \
-        ModelCheckpoint("checkpoints/ron_rnn_model-quote-{epoch:02d}.h5")
+        ModelCheckpoint("checkpoints/ron_rnn_model-quote-{epoch:02d}.h5",
+                        period=10)
 
     # - Fit Addl Data
     print("Training on Moby Dick Data...")
@@ -113,14 +115,18 @@ def main():
     addl_epochs = 1000
     addl_history = model.fit(x=x_addl, y=y_addl, batch_size=batch_size,
                              epochs=addl_epochs-start_epoch,
-                             callbacks=[addl_checkpoint], verbose=1)
+                             callbacks=[addl_checkpoint], verbose=0)
+    with open(os.path.join("checkpoints", "addl_history.pkl"), 'wb') as fout:
+        pickle.dump(addl_history.history, fout)
 
     # - Fit Quote Data
     print("Training on Ron Data...")
     quote_epochs = addl_epochs
     quote_history = model.fit(x=x_quote, y=y_quote, batch_size=batch_size,
                               epochs=quote_epochs,
-                              callbacks=[quote_checkpoint], verbose=1)
+                              callbacks=[quote_checkpoint], verbose=0)
+    with open(os.path.join("checkpoints", "quote_history.pkl"), 'wb') as fout:
+        pickle.dump(quote_history.history, fout)
 
     model.save(os.path.join("checkpoints", "ron_rnn_model-final.h5"))
 
