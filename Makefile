@@ -1,4 +1,4 @@
-.PHONY: all data process requirements clean train
+.PHONY: all data process requirements clean train quote
 
 #
 #  Variables
@@ -28,6 +28,9 @@ process:
 
 train:
 	$(PYTHON) $(SOURCE_DIR)/train_network.py
+
+quote:
+	$(PYTHON) $(SOURCE_DIR)/test_network.py
 
 requirements:
 	$(PIP) install -r requirements.txt

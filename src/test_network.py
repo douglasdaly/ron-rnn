@@ -24,7 +24,7 @@ from train_network import build_model
 
 def load_final_model(char_mapping):
     """ Loads the final Model from file """
-    fpath = os.path.join("checkpoints", "ron_rnn_model-final.h5")
+    fpath = "ron_rnn_model-final.h5"
 
     model = build_model(char_mapping)
     model.load_weights(fpath)
@@ -70,3 +70,35 @@ def generate_quote(model, start_letters, char_mapping, sequence_length):
             curr = curr[-sequence_length:-1]
 
     return ret
+
+
+def main(input_text=None):
+    """ Main script method """
+    sequence_length = 30
+    char_mapping = load_char_mapping()
+
+    probabilities = np.array([0.08167, 0.01492, 0.02782, 0.04253, 0.12702,
+                              0.02228, 0.02015, 0.06094, 0.06966, 0.00153,
+                              0.00772, 0.04025, 0.02406, 0.06749, 0.07507,
+                              0.01929, 0.00095, 0.05987, 0.06327, 0.09056,
+                              0.02758, 0.00978, 0.02360, 0.00150, 0.01974,
+                              0.00074])
+    probabilities = probabilities / probabilities.sum()
+
+    if input_text is None:
+        first_letter = char_mapping[np.random.choice(range(len(probabilities)),
+                                                     1, p=probabilities)+4][0]
+    else:
+        first_letter = input_text[0:sequence_length]
+
+    model = load_final_model(char_mapping)
+
+    quote = generate_quote(model, first_letter, char_mapping, sequence_length)
+    print("Quote:", quote)
+
+
+#
+#   Script Entry Point
+#
+if __name__ == "__main__":
+    main()

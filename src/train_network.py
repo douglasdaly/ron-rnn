@@ -128,7 +128,7 @@ def main():
     with open(os.path.join("checkpoints", "quote_history.pkl"), 'wb') as fout:
         pickle.dump(quote_history.history, fout)
 
-    model.save(os.path.join("checkpoints", "ron_rnn_model-final.h5"))
+    model.save("ron_rnn_model-final.h5")
 
 
 #
