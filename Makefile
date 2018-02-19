@@ -40,4 +40,5 @@ clean:
 	rm -f $(DATA_DIR)/*.txt
 	rm -f $(DATA_DIR)/*.zip
 	rm -f $(CHECKPOINT_DIR)/*.h5
+	rm -f $(CHECKPOINT_DIR)/*.pkl
 
