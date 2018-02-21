@@ -64,10 +64,11 @@ def generate_quote(model, start_letters, char_mapping, sequence_length):
         next_letter = char_mapping[np.random.choice(range(len(char_mapping)),
                                                     1, p=t_out[0, i, :])[0]]
         i = min(sequence_length-1, i+1)
+
         ret += next_letter
         curr += next_letter
         if len(curr) > sequence_length:
-            curr = curr[-sequence_length:-1]
+            curr = curr[-sequence_length:]
 
     return ret
 
@@ -94,6 +95,7 @@ def main(input_text=None):
     model = load_final_model(char_mapping)
 
     quote = generate_quote(model, first_letter, char_mapping, sequence_length)
+
     print("Quote:", quote)
 
 
