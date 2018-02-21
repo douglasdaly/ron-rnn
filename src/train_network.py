@@ -116,7 +116,7 @@ def main():
     # - Fit Addl Data
     print("Training on Moby Dick Data...")
     batch_size = 1024
-    addl_epochs = 1000
+    addl_epochs = 300
     addl_history = model.fit(x=x_addl, y=y_addl, batch_size=batch_size,
                              epochs=addl_epochs-start_epoch,
                              callbacks=[addl_checkpoint], verbose=0)
@@ -125,7 +125,7 @@ def main():
 
     # - Fit Quote Data
     print("Training on Ron Data...")
-    quote_epochs = addl_epochs
+    quote_epochs = 200
     quote_history = model.fit(x=x_quote, y=y_quote, batch_size=batch_size,
                               epochs=quote_epochs,
                               callbacks=[quote_checkpoint], verbose=0)
