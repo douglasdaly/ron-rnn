@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 15 21:49:57 2018
-
-@author: doug
+Generate a quote with the trained network
 """
 #
 #   Imports
